@@ -241,6 +241,28 @@
       transform: rotate(1deg);
     }
 
+    .data-transfer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .data-transfer button {
+      padding: 0;
+      color: var(--muted);
+      background: transparent;
+      font-size: 12px;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .transfer-hint {
+      color: var(--muted);
+      font-size: 12px;
+      margin: 10px 0 0;
+    }
+
     .main {
       min-height: 520px;
     }
@@ -495,6 +517,13 @@
           <input id="topicInput" type="text" placeholder="New topic" autocomplete="off">
           <button type="submit">+</button>
         </form>
+        <div class="data-transfer">
+          <button id="exportTasks" type="button">Export all tasks</button>
+          <button id="importTasks" type="button">Import backup</button>
+        </div>
+        <input id="backupFile" type="file" accept=".json,application/json" hidden>
+        <p class="transfer-hint">Import replaces the tasks in this browser. Export first to keep a copy.</p>
+        <p class="transfer-hint" id="transferStatus" role="status"></p>
       </aside>
 
       <section class="panel main">
@@ -871,6 +900,81 @@
     showFavoritesEl.addEventListener("click", () => {
       taskFilter = "favorites";
       render();
+    });
+
+    document.getElementById("exportTasks").addEventListener("click", () => {
+      const backup = { format: "todo-tabs-backup", version: 1, data };
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `todo-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+      document.getElementById("transferStatus").textContent = "Backup download started. Keep this file on your computer, not in GitHub.";
+    });
+
+    document.getElementById("importTasks").addEventListener("click", () => {
+      document.getElementById("backupFile").click();
+    });
+
+    function validateBackup(backup) {
+      if (!backup || backup.format !== "todo-tabs-backup" || backup.version !== 1) {
+        throw new Error("Choose a JSON file created by Export all tasks.");
+      }
+      const next = backup.data;
+      if (!next || !Array.isArray(next.topics) || !next.topics.length) {
+        throw new Error("The backup has no valid topics.");
+      }
+      const topicIds = new Set();
+      next.topics.forEach(topic => {
+        if (!topic || typeof topic.id !== "string" || !topic.id || topicIds.has(topic.id) ||
+            typeof topic.title !== "string" || !topic.title.trim() || !Array.isArray(topic.tasks)) {
+          throw new Error("Invalid topic in the backup. Current tasks were not changed.");
+        }
+        topicIds.add(topic.id);
+        ["wishlistId", "wishlistOwnerId", "shareToken"].forEach(key => {
+          if (topic[key] !== undefined && typeof topic[key] !== "string") throw new Error("Invalid wish list details.");
+        });
+        const taskIds = new Set();
+        topic.tasks.forEach(task => {
+          if (!task || typeof task.id !== "string" || !task.id || taskIds.has(task.id) ||
+              typeof task.text !== "string" || typeof task.done !== "boolean") {
+            throw new Error("Invalid task in the backup. Current tasks were not changed.");
+          }
+          taskIds.add(task.id);
+          ["comment", "shopUrl", "cloudGiftId"].forEach(key => {
+            if (task[key] !== undefined && typeof task[key] !== "string") throw new Error("Invalid task details.");
+          });
+          if (task.favorite !== undefined && typeof task.favorite !== "boolean") throw new Error("Invalid star value.");
+        });
+      });
+      if (!topicIds.has(next.activeTopicId)) next.activeTopicId = next.topics[0].id;
+      return next;
+    }
+
+    document.getElementById("backupFile").addEventListener("change", async event => {
+      const input = event.currentTarget;
+      const file = input.files[0];
+      if (!file) return;
+      const status = document.getElementById("transferStatus");
+      try {
+        const next = validateBackup(JSON.parse(await file.text()));
+        // Keep an emergency copy and persist successfully before replacing in-memory data.
+        localStorage.setItem(`${STORAGE_KEY}-before-import`, JSON.stringify(data));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        data = next;
+        taskFilter = "all";
+        render();
+        const count = data.topics.reduce((total, topic) => total + topic.tasks.length, 0);
+        status.textContent = `Imported ${data.topics.length} topics and ${count} tasks. Nothing was published online.`;
+      } catch (error) {
+        status.textContent = `Import failed: ${error.message}`;
+      } finally {
+        input.value = "";
+      }
     });
 
     window.WishlistLocal = {

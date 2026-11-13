@@ -82,6 +82,47 @@
       editor.appendChild(label);
     });
     content.appendChild(editor);
+
+    // Show saved URLs as real links; keep the inputs available for editing.
+    content.querySelectorAll(".task-comment").forEach(input => {
+      const row = document.createElement("div");
+      row.className = "gift-link-row";
+      const link = document.createElement("a");
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      const edit = document.createElement("button");
+      edit.type = "button";
+      edit.className = "edit-gift-link";
+      edit.textContent = "Edit";
+      edit.setAttribute("aria-label", "Edit link");
+      row.append(link, edit);
+      input.after(row);
+
+      function updateLink() {
+        const url = window.safeShopUrl(input.value.trim());
+        const editing = document.activeElement === input;
+        row.hidden = !url || editing;
+        if (url) {
+          link.href = url;
+          link.textContent = input.value.trim();
+          input.hidden = !editing;
+        } else {
+          link.removeAttribute("href");
+        }
+      }
+      edit.addEventListener("click", () => {
+        input.hidden = false;
+        row.hidden = true;
+        input.focus();
+      });
+      input.addEventListener("input", updateLink);
+      input.addEventListener("focus", updateLink);
+      input.addEventListener("blur", updateLink);
+      if (!input.classList.contains("gift-shop-url")) {
+        item.querySelector(".comment-remove").addEventListener("click", updateLink);
+      }
+      updateLink();
+    });
   }
 
   window.WishShare = { isWishlist, render, decorateGift };

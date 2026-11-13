@@ -67,7 +67,11 @@
 .wish-mode .task > .task-content .task-title { font-size: 16px; line-height: 1.35; margin: 12px 8px 0; overflow-wrap: anywhere; }
 .wish-mode .task.done .task-title { color: #666356; }
 .wish-mode .task-comment { background: transparent; border: 0; border-bottom: 1px solid #c5bd98; font-family: Georgia, serif; font-size: 12px; padding: 8px; }
-.wish-mode .favorite-task.active { color: #252419; }
+.wish-mode .favorite-task.active { color: #e8ae00; text-shadow: 0 0 10px rgba(255, 202, 34, .65); }
+.wish-mode .gift-link-row { display: flex; align-items: baseline; gap: 8px; margin: 10px 8px; font-size: 12px; }
+.wish-mode .gift-link-row[hidden], .wish-mode .task-comment[hidden] { display: none; }
+.wish-mode .gift-link-row a { color: #252419; overflow-wrap: anywhere; min-width: 0; text-underline-offset: 3px; }
+.wish-mode .edit-gift-link { padding: 0; background: transparent; color: #66604a; font: inherit; text-decoration: underline; }
 .wish-mode .comment-toggle { background: transparent; color: #252419; border: 1px solid #aaa17b; }
 .wish-mode .comment-remove { color: #252419; border-color: #aaa17b; }
 .wish-mode .delete-task { margin-left: auto; }

@@ -831,6 +831,7 @@
         deleteButton.setAttribute("aria-label", `Delete task: ${task.text}`);
         deleteButton.textContent = "x";
         deleteButton.addEventListener("click", () => {
+          if (!window.confirm(`Вы точно хотите удалить «${task.text}»?`)) return;
           topic.tasks = topic.tasks.filter(item => item.id !== task.id);
           saveData();
           render();

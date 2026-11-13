@@ -41,14 +41,16 @@
     priceLabel.className = "gift-price";
     priceLabel.textContent = task.price || "";
     content.prepend(brandLabel);
-    content.querySelector(".task-title").after(priceLabel);
+    const titleLabel = content.querySelector(".task-title");
+    titleLabel.after(priceLabel);
 
     const editor = document.createElement("details");
     editor.className = "gift-editor";
     const summary = document.createElement("summary");
-    summary.textContent = "Photo, brand & price";
+    summary.textContent = "Edit gift details";
     editor.appendChild(summary);
     [
+      ["text", "Gift name", "Gift name"],
       ["imageUrl", "Photo URL", "https://.../photo.jpg"],
       ["brand", "Brand", "Brand or maker"],
       ["price", "Price", "e.g. 2 000 ₽"]
@@ -59,6 +61,18 @@
       input.type = key === "imageUrl" ? "url" : "text";
       input.placeholder = placeholder;
       input.value = task[key] || "";
+      if (key === "text") {
+        titleLabel.title = "Double-click to edit gift name";
+        titleLabel.style.cursor = "text";
+        titleLabel.addEventListener("dblclick", () => {
+          editor.open = true;
+          input.focus();
+          input.select();
+        });
+        input.addEventListener("blur", () => {
+          input.value = task.text;
+        });
+      }
       let previewTimer;
       function updatePhoto() {
         clearTimeout(previewTimer);
@@ -68,7 +82,13 @@
         photo = nextPhoto;
       }
       input.addEventListener("input", () => {
-        task[key] = input.value;
+        if (key === "text" && !input.value.trim()) return;
+        task[key] = key === "text" ? input.value.trim() : input.value;
+        if (key === "text") {
+          titleLabel.textContent = task.text;
+          const image = photo.querySelector("img");
+          if (image) image.alt = task.text;
+        }
         if (key === "brand") brandLabel.textContent = task.brand;
         if (key === "price") priceLabel.textContent = task.price;
         local.saveData();

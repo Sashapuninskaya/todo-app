@@ -1,0 +1,345 @@
+{
+  "format": "todo-tabs-backup",
+  "version": 1,
+  "data": {
+    "activeTopicId": "topic-1790767094445-41c79b23688c8",
+    "topics": [
+      {
+        "id": "home",
+        "title": "Sw. Home",
+        "tasks": [
+          {
+            "id": "task-1790767064583-3876687ef66308",
+            "text": "Я хочу сделать паломнический путь типо Лавры или сантьяго",
+            "done": false,
+            "favorite": false
+          },
+          {
+            "id": "task-1790767041761-f8444bff32cb7",
+            "text": "Я хочу шоу там где мы обсуждаем тексты и события и книги относительно наших куцльтур и не только",
+            "done": false
+          },
+          {
+            "id": "task-1790766931233-e0a00e5d8bf1c8",
+            "text": "купить нитки на шарф",
+            "done": false
+          }
+        ]
+      },
+      {
+        "id": "work",
+        "title": "Job",
+        "tasks": [
+          {
+            "id": "task-1791957978246-77a7a545c1f92",
+            "text": "НАПИСАТЬ ARMETA!!!!!!!!!!",
+            "done": false,
+            "comment": "",
+            "favorite": false
+          },
+          {
+            "id": "task-1791174360964-daa41e84e89de",
+            "text": "ответить веронике !",
+            "done": true,
+            "comment": "",
+            "favorite": false
+          },
+          {
+            "id": "task-1790919118516-f669fb7291a1a",
+            "text": "Загрузить на гитхаб!!!!!!!!!",
+            "done": false,
+            "comment": "",
+            "favorite": false
+          },
+          {
+            "id": "task-1790919110302-f4bfaa7063a908",
+            "text": "Сделать Дайане визитку!!!",
+            "done": false,
+            "comment": "",
+            "favorite": false
+          },
+          {
+            "id": "task-1790919030548-9477d2a3bbba1",
+            "text": "попросить кодекс разложить панели",
+            "done": true,
+            "comment": "",
+            "favorite": false
+          },
+          {
+            "id": "task-1790857639381-9639cd32ecf63",
+            "text": "Написать Анастасии фидбэк на голосовые",
+            "done": true,
+            "comment": "",
+            "favorite": true
+          },
+          {
+            "id": "task-1790769068930-27c5384080a1d8",
+            "text": "доделать сайт!",
+            "done": false,
+            "comment": "дизайн ",
+            "favorite": false
+          },
+          {
+            "id": "task-1790766916466-903a4fceb6bf7",
+            "text": "подумать над приложением для теклы спецификации",
+            "done": false
+          },
+          {
+            "id": "task-1790766886823-3d24e5252b7928",
+            "text": "гос архив",
+            "done": true
+          },
+          {
+            "id": "task-1790766880856-9ac3c62df1f2c",
+            "text": "очаково матвеевкое",
+            "done": false
+          }
+        ]
+      },
+      {
+        "id": "topic-1790767094445-41c79b23688c8",
+        "title": "Wish list",
+        "tasks": [
+          {
+            "id": "task-1794545364045-c5faafcbe7e618",
+            "text": "Вот эти Круэллы туфельки",
+            "done": false,
+            "comment": "https://subbotastore.ru/product/tufli-kruella",
+            "favorite": false,
+            "cloudGiftId": "dbeaea76-77bd-4292-b8fd-6587ede325cb"
+          },
+          {
+            "id": "task-1794545306204-45dc0f78bd6968",
+            "text": "Туфли 36,5-37 размер. Ни слова больше....",
+            "done": false,
+            "comment": "https://viled.kz/item/421465 ",
+            "favorite": false,
+            "cloudGiftId": "6793fc45-9984-43d7-9392-8fcdfe6a18bf"
+          },
+          {
+            "id": "task-1794201426708-d072f621160f88",
+            "text": "Микротоки",
+            "done": false,
+            "comment": "",
+            "favorite": false,
+            "cloudGiftId": "275026e4-f7ea-4ab0-ab5e-db7afdda5fbe"
+          },
+          {
+            "id": "task-1794201389804-96a432270ac088",
+            "text": "термобелье",
+            "done": false,
+            "comment": "",
+            "favorite": false,
+            "cloudGiftId": "7db85773-48cb-4b8a-979b-045e58aea36d"
+          },
+          {
+            "id": "task-1794201291990-f37d844ad7b958",
+            "text": "Куртка и то и то",
+            "done": false,
+            "comment": "",
+            "favorite": false,
+            "cloudGiftId": "f4537dd8-fede-4c56-b319-c522287975a1"
+          },
+          {
+            "id": "task-1794201280413-0b760b60c63168",
+            "text": "Очиститель воздуха!!",
+            "done": false,
+            "comment": "",
+            "favorite": false,
+            "cloudGiftId": "3dad6050-c87d-49e3-94a6-d63a6fc5108c"
+          },
+          {
+            "id": "task-1794201265390-8125010da75398",
+            "text": "нормальный большой рюкзак",
+            "done": false,
+            "comment": "",
+            "favorite": false,
+            "cloudGiftId": "8e88a273-5da5-429b-839e-255b26f94df6"
+          },
+          {
+            "id": "task-1793961178766-bc6271a3be41f",
+            "text": "Заказать кольцо у Вари",
+            "done": false,
+            "comment": "",
+            "favorite": false,
+            "cloudGiftId": "c338eabd-8364-40e7-9dd9-ae8203e3a7d9"
+          },
+          {
+            "id": "task-1793961147793-f228a80fd97c8",
+            "text": "Парфюм Tom Ford Cafe Rose",
+            "done": false,
+            "comment": "",
+            "favorite": false,
+            "cloudGiftId": "6a25fa86-ff7f-4d49-8c8e-7b0418d6d680"
+          },
+          {
+            "id": "task-1793960077744-820ffb774c5c3",
+            "text": "Флиска",
+            "done": false,
+            "comment": "",
+            "favorite": false,
+            "cloudGiftId": "5209e6bd-5bbd-4401-a841-6689b2f959ae"
+          },
+          {
+            "id": "task-1793960024328-c2f0e659197be8",
+            "text": "платье My812",
+            "done": false,
+            "comment": "",
+            "favorite": false,
+            "cloudGiftId": "b91583b8-ce75-4d0d-8a5f-e7fd4703cf7c"
+          },
+          {
+            "id": "task-1793959788783-9127532e6fb65",
+            "text": "Фен-стайлер",
+            "done": false,
+            "comment": "",
+            "favorite": false,
+            "cloudGiftId": "4b7ce01d-cbd2-4e5b-a4a1-621ab7d0a699"
+          },
+          {
+            "id": "task-1790828977250-5cb5d3b8613b6",
+            "text": "обка штаны джины",
+            "done": true,
+            "comment": "",
+            "favorite": false,
+            "cloudGiftId": "b0c190e3-b95c-4a79-93f6-3597cee9e232"
+          },
+          {
+            "id": "task-1790828965315-c764d287c3fdf",
+            "text": "жилетка парадная",
+            "done": false,
+            "comment": "",
+            "favorite": false,
+            "cloudGiftId": "480b4009-3ce8-49fb-9768-7760bc66390b"
+          },
+          {
+            "id": "task-1790828954673-2068177489d978",
+            "text": "2 кофты",
+            "done": false,
+            "comment": "",
+            "favorite": false,
+            "cloudGiftId": "0bf6898d-d442-4c27-b48b-17c079a2038d"
+          },
+          {
+            "id": "task-1790767129075-d30e6199af8ce",
+            "text": "клавиатура",
+            "done": false,
+            "cloudGiftId": "d456cc21-37f3-4d9f-83e4-483af5678dee"
+          },
+          {
+            "id": "task-1790767112383-aec4b68a10dbd",
+            "text": "Теплая кофта",
+            "done": false,
+            "cloudGiftId": "d7c4030e-04e8-4abb-a89a-4b1455eaf65c"
+          },
+          {
+            "id": "task-1790767105783-85aefea40fae98",
+            "text": "Зубы",
+            "done": false,
+            "cloudGiftId": "f39b64f2-68b3-48bc-a3bb-304fd4235456"
+          },
+          {
+            "id": "task-1790767101120-f6b25bbf8f5e18",
+            "text": "Ботинки",
+            "done": false,
+            "cloudGiftId": "28658593-5857-48f0-9e8c-baa0036a9df8"
+          },
+          {
+            "id": "task-1790767098046-48e5f7b3418078",
+            "text": "Пальто",
+            "done": true,
+            "cloudGiftId": "be251828-a938-47fc-8182-98ff997277c9"
+          }
+        ],
+        "wishlistId": "1136c21a-ecdf-43eb-9db0-5a0cc86f0a41",
+        "wishlistOwnerId": "60fb3ca0-0529-41a9-9283-4996f047805f",
+        "shareToken": "0e2ccddb-837f-4245-9d1f-13548a917e67"
+      },
+      {
+        "id": "topic-1790767427090-f0d030c666338",
+        "title": "What i want to do",
+        "tasks": [
+          {
+            "id": "task-1791444348218-3436e9dcfb1aa8",
+            "text": "мне надо разработать как при помощи ии ускорить свою работу в автокаде",
+            "done": false,
+            "comment": "построить файл который будет сделан под меня чтобы я сразцу брала и делала проект ",
+            "favorite": true
+          },
+          {
+            "id": "task-1791440046770-e001386c56ab2",
+            "text": "Моя идея - берем тексты которые относятся к этому месту и обсуждаем в этом месте! напимер мы в КоКанде и обсуждаем литературу про коканд",
+            "done": false,
+            "comment": "Едем в Самарканд и обсуждаем там тексты и не только про самарканд ",
+            "favorite": false
+          },
+          {
+            "id": "task-1790767800769-7a21ce48056c2",
+            "text": "Каждое лето летний лагерь для детей на неделю две с занятиями музыкой дискуссиями играми и тихим сном",
+            "done": false,
+            "comment": "",
+            "favorite": true
+          },
+          {
+            "id": "task-1790767444395-1598b263eb1088",
+            "text": "порисовать на холсте",
+            "done": false,
+            "comment": ""
+          },
+          {
+            "id": "task-1790767439466-3d8f92426e3f88",
+            "text": "пазлы",
+            "done": false,
+            "comment": ""
+          },
+          {
+            "id": "task-1790767436106-5b312c889472a8",
+            "text": "Игра еврейская",
+            "done": false,
+            "comment": ""
+          }
+        ]
+      },
+      {
+        "id": "topic-1790839389168-d57ae71ffd27",
+        "title": "Travel",
+        "tasks": [
+          {
+            "id": "task-1790839407013-fbb5160a0b08d8",
+            "text": "Памирский тракт Таджикистан",
+            "done": false,
+            "comment": "",
+            "favorite": false
+          }
+        ]
+      },
+      {
+        "id": "topic-1791174700001-3b4858c795e01",
+        "title": "Гос АРХИВ",
+        "tasks": [
+          {
+            "id": "task-1791175860588-a4a3a6e63a351",
+            "text": "Шумоизол плоиты Шуманет ??? \\",
+            "done": false,
+            "comment": "",
+            "favorite": false
+          },
+          {
+            "id": "task-1791174733081-cf0a4cbb118ac",
+            "text": "Показать общие указания !!",
+            "done": false,
+            "comment": "",
+            "favorite": false
+          },
+          {
+            "id": "task-1791174723001-a61fa0f46e239",
+            "text": "Спросить про удлинитель это отдельный элемент ???",
+            "done": false,
+            "comment": "",
+            "favorite": false
+          }
+        ]
+      }
+    ]
+  }
+}

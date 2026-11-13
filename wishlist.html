@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Wish list</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="wishlist.css">
+</head>
+<body class="gift-page">
+  <main>
+    <h1 id="giftListTitle">Wish list</h1>
+    <p>Choose a gift, reserve it, then follow the shop link to buy it.</p>
+    <p>Reserve only if you plan to buy this gift. Reserving does not place an order.</p>
+    <button type="button" id="refreshGifts">Refresh availability</button>
+    <p id="giftStatus" role="status">Loading gifts...</p>
+    <ul id="sharedGifts"></ul>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="wishlist-public.js"></script>
+</body>
+</html>

@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>To Do List</title>
+  <link rel="stylesheet" href="wishlist.css">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+    :root {
+      --bg: #f7f6f2;
+      --card: #f7f6f2;
+      --card-strong: #f7f6f2;
+      --text: #101010;
+      --muted: #6d6b66;
+      --line: #dedbd2;
+      --accent: #101010;
+      --accent-dark: #2e2e2e;
+      --danger: #101010;
+      --star: #101010;
+      --shadow: 0 22px 45px rgba(18, 18, 18, 0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background: var(--bg);
+      font: 16px/1.5 "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+    }
+
+    .page {
+      width: min(980px, calc(100% - 48px));
+      margin: 48px auto;
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+      align-items: flex-end;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 5vw, 68px);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      text-shadow: none;
+    }
+
+    .subtitle {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-family: inherit;
+    }
+
+    .stats {
+      min-width: 220px;
+      border: 0;
+      background: var(--card-strong);
+      border-radius: 0;
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      font-family: inherit;
+    }
+
+    .stats strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .stats span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--card-strong);
+      border: 0;
+      border-radius: 0;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .sidebar {
+      padding: 24px 18px;
+    }
+
+    .tabs {
+      display: grid;
+      gap: 2px;
+      margin-bottom: 24px;
+    }
+
+    .tab {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 1px 0;
+      color: var(--text);
+      background: transparent;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    .tab.active {
+      color: var(--text);
+      background: transparent;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .tab small {
+      color: inherit;
+      opacity: 0.45;
+      font-size: 11px;
+    }
+
+    .form {
+      display: flex;
+      gap: 8px;
+    }
+
+    .form input {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      padding: 12px 13px;
+      color: var(--text);
+      background: var(--card-strong);
+      outline: none;
+      font-family: inherit;
+    }
+
+    .form input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(16, 16, 16, 0.08);
+    }
+
+    .form button,
+    .clear-done,
+    .delete-topic {
+      border-radius: 0;
+      padding: 12px 15px;
+      color: var(--card-strong);
+      background: var(--accent);
+      font-family: inherit;
+      font-weight: 700;
+    }
+
+    .form button:hover,
+    .clear-done:hover,
+    .delete-topic:hover {
+      background: var(--accent-dark);
+    }
+
+    #topicForm {
+      align-items: center;
+      gap: 12px;
+    }
+
+    #topicInput {
+      border: 0;
+      border-bottom: 1px solid rgba(16, 16, 16, 0.28);
+      background: transparent;
+      padding-left: 0;
+      padding-right: 0;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    #topicInput::placeholder {
+      color: var(--text);
+      opacity: 1;
+    }
+
+    #topicInput:focus {
+      border-color: var(--text);
+      box-shadow: none;
+    }
+
+    #topicForm button {
+      position: relative;
+      width: 36px;
+      height: 34px;
+      padding: 0;
+      color: var(--text);
+      background: transparent;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1;
+      transform: rotate(-2deg);
+    }
+
+    #topicForm button::before,
+    #topicForm button::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border: 1.5px solid var(--text);
+      pointer-events: none;
+    }
+
+    #topicForm button::after {
+      inset: 5px 2px 2px 5px;
+      opacity: 0.45;
+      transform: rotate(4deg);
+    }
+
+    #topicForm button:hover {
+      background: transparent;
+      transform: rotate(1deg);
+    }
+
+    .main {
+      min-height: 520px;
+    }
+
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 26px 28px 18px;
+      border-bottom: 0;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1;
+      cursor: text;
+    }
+
+    .title-edit {
+      width: min(100%, 320px);
+      border: 1px solid var(--accent);
+      border-radius: 0;
+      padding: 6px 9px;
+      color: var(--text);
+      background: var(--card-strong);
+      outline: none;
+      font: inherit;
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .hint {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .topic-actions {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .task-filter {
+      display: flex;
+      gap: 8px;
+      padding: 16px 28px 0;
+      font-family: inherit;
+    }
+
+    .filter-button {
+      border: 1px solid var(--line);
+      border-radius: 0;
+      padding: 8px 13px;
+      color: var(--muted);
+      background: var(--card-strong);
+      font-size: 14px;
+    }
+
+    .filter-button.active {
+      color: var(--card-strong);
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .clear-done,
+    .delete-topic {
+      align-self: start;
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    .clear-done:hover,
+    .delete-topic:hover {
+      color: var(--card-strong);
+      background: var(--danger);
+    }
+
+    .task-form {
+      padding: 20px 28px;
+      border-bottom: 0;
+    }
+
+    .tasks {
+      display: grid;
+      gap: 10px;
+      padding: 22px 28px 28px;
+      margin: 0;
+      list-style: none;
+    }
+
+    .task {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 15px 16px;
+      background: var(--card-strong);
+      border: 0;
+      border-radius: 0;
+      font-family: inherit;
+    }
+
+    .task-checkbox {
+      width: 21px;
+      height: 21px;
+      margin-top: 2px;
+      accent-color: var(--accent);
+      flex: 0 0 auto;
+    }
+
+    .task.done .task-title {
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .task-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-title {
+      display: block;
+      margin-bottom: 9px;
+    }
+
+    .comment-toggle {
+      width: 30px;
+      height: 30px;
+      border-radius: 0;
+      color: var(--card-strong);
+      background: var(--accent);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .comment-toggle:hover {
+      background: var(--accent-dark);
+    }
+
+    .comment-remove {
+      width: 30px;
+      height: 30px;
+      border-radius: 0;
+      color: var(--danger);
+      background: transparent;
+      border: 1px solid var(--line);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .comment-remove:hover {
+      color: var(--card-strong);
+      background: var(--danger);
+    }
+
+    .favorite-task {
+      color: var(--muted);
+      background: transparent;
+      font-size: 27px;
+      line-height: 1;
+      padding: 0 2px;
+    }
+
+    .favorite-task.active {
+      color: var(--star);
+      text-shadow: none;
+    }
+
+    .task-comment {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      padding: 9px 11px;
+      color: var(--text);
+      background: var(--card-strong);
+      outline: none;
+      font-size: 14px;
+    }
+
+    .task-comment:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(16, 16, 16, 0.08);
+    }
+
+    .delete-task {
+      color: var(--muted);
+      background: transparent;
+      font-size: 20px;
+      line-height: 1;
+      padding: 4px 8px;
+    }
+
+    .delete-task:hover {
+      color: var(--danger);
+    }
+
+    .empty {
+      padding: 38px 28px 44px;
+      color: var(--muted);
+      text-align: center;
+      font-family: inherit;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100% - 28px, 620px);
+        margin: 24px auto;
+      }
+
+      .hero,
+      .main-header {
+        display: block;
+      }
+
+      .stats {
+        margin-top: 18px;
+      }
+
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div>
+        <h1>To Do List</h1>
+        <p class="subtitle">Topics on the left, tasks on the right. Everything is saved in this browser.</p>
+      </div>
+      <div class="stats" aria-live="polite">
+        <strong id="statsDone">0/0</strong>
+        <span>tasks completed in this topic</span>
+      </div>
+    </header>
+
+    <main class="app">
+      <aside class="panel sidebar" aria-label="Task topics">
+        <div class="tabs" id="tabs"></div>
+        <form class="form" id="topicForm">
+          <input id="topicInput" type="text" placeholder="New topic" autocomplete="off">
+          <button type="submit">+</button>
+        </form>
+      </aside>
+
+      <section class="panel main">
+        <div class="main-header">
+          <div>
+            <h2 id="activeTitle">Tasks</h2>
+            <p class="hint" id="activeHint">Choose a topic and add a task.</p>
+          </div>
+          <div class="topic-actions">
+            <button class="clear-done" id="clearDone" type="button">Clear completed</button>
+            <button class="delete-topic" id="deleteTopic" type="button">Delete topic</button>
+          </div>
+        </div>
+
+        <section class="wishlist-tools" id="wishlistTools" hidden>
+          <h3>Share this wish list</h3>
+          <p>Only gifts in this topic are published. Publish again after making changes.</p>
+          <form id="wishlistLogin" class="wishlist-login">
+            <input id="wishlistEmail" type="email" placeholder="Your email" aria-label="Your email" autocomplete="username" required>
+            <input id="wishlistPassword" type="password" placeholder="Password (at least 8 characters)" aria-label="Password" autocomplete="current-password" minlength="8" required>
+            <button type="submit">Sign in</button>
+            <button type="submit" name="signup" value="yes">Create account</button>
+          </form>
+          <div id="wishlistAccount" hidden>
+            <p id="wishlistUser"></p>
+            <button type="button" id="publishWishlist">Publish wish list</button>
+            <button type="button" id="loadPublishedWishlists">Open published lists</button>
+            <button type="button" id="signOutWishlist">Sign out</button>
+          </div>
+          <p id="wishlistStatus" role="status"></p>
+          <div id="wishlistLinkBox" hidden>
+            <label for="wishlistLink">Link for friends</label>
+            <input id="wishlistLink" type="text" readonly>
+            <button type="button" id="copyWishlistLink">Copy link</button>
+            <a id="previewWishlist" target="_blank" rel="noopener">Preview</a>
+          </div>
+        </section>
+
+        <form class="form task-form" id="taskForm">
+          <input id="taskInput" type="text" placeholder="What needs to be done?" autocomplete="off">
+          <button type="submit">Add</button>
+        </form>
+
+        <div class="task-filter" aria-label="Task filter">
+          <button class="filter-button active" id="showAll" type="button">All</button>
+          <button class="filter-button" id="showFavorites" type="button">Important</button>
+        </div>
+
+        <ul class="tasks" id="tasks"></ul>
+        <p class="empty" id="emptyState" hidden>No tasks yet. Add your first task above.</p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "todo-tabs-data-v1";
+    let taskFilter = "all";
+
+    const defaultData = {
+      activeTopicId: "home",
+      topics: [
+        {
+          id: "home",
+          title: "Home",
+          tasks: [
+            { id: "task-1", text: "Sort mail", done: false, comment: "", favorite: false },
+            { id: "task-2", text: "Pay bills", done: true, comment: "Before Friday", favorite: true }
+          ]
+        },
+        {
+          id: "work",
+          title: "Work",
+          tasks: [
+            { id: "task-3", text: "Prepare a weekly plan", done: false, comment: "", favorite: false }
+          ]
+        }
+      ]
+    };
+
+    let data = loadData();
+
+    const tabsEl = document.getElementById("tabs");
+    const tasksEl = document.getElementById("tasks");
+    const emptyStateEl = document.getElementById("emptyState");
+    const activeTitleEl = document.getElementById("activeTitle");
+    const activeHintEl = document.getElementById("activeHint");
+    const statsDoneEl = document.getElementById("statsDone");
+    const topicFormEl = document.getElementById("topicForm");
+    const topicInputEl = document.getElementById("topicInput");
+    const taskFormEl = document.getElementById("taskForm");
+    const taskInputEl = document.getElementById("taskInput");
+    const clearDoneEl = document.getElementById("clearDone");
+    const deleteTopicEl = document.getElementById("deleteTopic");
+    const showAllEl = document.getElementById("showAll");
+    const showFavoritesEl = document.getElementById("showFavorites");
+    let titleEditEl = null;
+
+    function loadData() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return structuredClone(defaultData);
+
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return structuredClone(defaultData);
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function getActiveTopic() {
+      return data.topics.find(topic => topic.id === data.activeTopicId) || data.topics[0];
+    }
+
+    function createId(prefix) {
+      return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function startTitleEdit() {
+      const activeTopic = getActiveTopic();
+      if (!activeTopic || titleEditEl) return;
+
+      const input = document.createElement("input");
+      input.className = "title-edit";
+      input.type = "text";
+      input.value = activeTopic.title;
+      input.setAttribute("aria-label", "Edit topic title");
+
+      titleEditEl = input;
+      activeTitleEl.replaceWith(input);
+      input.focus();
+      input.select();
+
+      function finish(save) {
+        if (!titleEditEl) return;
+        const nextTitle = input.value.trim();
+        if (save && nextTitle) {
+          activeTopic.title = nextTitle;
+          saveData();
+        }
+        input.replaceWith(activeTitleEl);
+        titleEditEl = null;
+        render();
+      }
+
+      input.addEventListener("blur", () => finish(true));
+      input.addEventListener("keydown", event => {
+        if (event.key === "Enter") finish(true);
+        if (event.key === "Escape") finish(false);
+      });
+    }
+
+    function render() {
+      const activeTopic = getActiveTopic();
+
+      if (!activeTopic && data.topics.length === 0) {
+        activeTitleEl.textContent = "Tasks";
+        activeHintEl.textContent = "Create a topic on the left to add tasks.";
+        tabsEl.innerHTML = "";
+        tasksEl.innerHTML = "";
+        emptyStateEl.hidden = false;
+        statsDoneEl.textContent = "0/0";
+        return;
+      }
+
+      if (activeTopic.id !== data.activeTopicId) {
+        data.activeTopicId = activeTopic.id;
+        saveData();
+      }
+
+      renderTabs(activeTopic.id);
+      renderTasks(activeTopic);
+      renderStats(activeTopic);
+      if (window.WishShare) window.WishShare.render(activeTopic);
+    }
+
+    function renderTabs(activeTopicId) {
+      tabsEl.innerHTML = "";
+
+      data.topics.forEach(topic => {
+        const undoneCount = topic.tasks.filter(task => !task.done).length;
+        const button = document.createElement("button");
+        button.className = `tab${topic.id === activeTopicId ? " active" : ""}`;
+        button.type = "button";
+        button.innerHTML = `<span></span><small>${undoneCount}</small>`;
+        button.querySelector("span").textContent = topic.title;
+        button.addEventListener("click", () => {
+          data.activeTopicId = topic.id;
+          saveData();
+          render();
+        });
+        tabsEl.appendChild(button);
+      });
+    }
+
+    function renderTasks(topic) {
+      activeTitleEl.textContent = topic.title;
+      const doneCount = topic.tasks.filter(task => task.done).length;
+      const favoriteCount = topic.tasks.filter(task => task.favorite).length;
+      const visibleTasks = taskFilter === "favorites"
+        ? topic.tasks.filter(task => task.favorite)
+        : topic.tasks;
+
+      activeHintEl.textContent = `${doneCount} of ${topic.tasks.length} completed, ${favoriteCount} important`;
+      showAllEl.classList.toggle("active", taskFilter === "all");
+      showFavoritesEl.classList.toggle("active", taskFilter === "favorites");
+      emptyStateEl.hidden = visibleTasks.length > 0;
+      emptyStateEl.textContent = taskFilter === "favorites"
+        ? "No important tasks yet. Click the star next to a task."
+        : "No tasks yet. Add your first task above.";
+      tasksEl.innerHTML = "";
+
+      visibleTasks.forEach(task => {
+        const item = document.createElement("li");
+        item.className = `task${task.done ? " done" : ""}`;
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "task-checkbox";
+        checkbox.checked = task.done;
+        checkbox.addEventListener("change", () => {
+          task.done = checkbox.checked;
+          saveData();
+          render();
+        });
+
+        const favoriteButton = document.createElement("button");
+        favoriteButton.className = `favorite-task${task.favorite ? " active" : ""}`;
+        favoriteButton.type = "button";
+        favoriteButton.setAttribute("aria-label", `Mark task as important: ${task.text}`);
+        favoriteButton.textContent = "★";
+        favoriteButton.addEventListener("click", () => {
+          task.favorite = !task.favorite;
+          saveData();
+          render();
+        });
+
+        const content = document.createElement("div");
+        content.className = "task-content";
+
+        const text = document.createElement("span");
+        text.className = "task-title";
+        text.textContent = task.text;
+
+        const commentToggle = document.createElement("button");
+        commentToggle.className = "comment-toggle";
+        commentToggle.type = "button";
+        commentToggle.setAttribute("aria-label", `Add note to task: ${task.text}`);
+        commentToggle.textContent = "+";
+
+        const commentRemove = document.createElement("button");
+        commentRemove.className = "comment-remove";
+        commentRemove.type = "button";
+        commentRemove.setAttribute("aria-label", `Remove note from task: ${task.text}`);
+        commentRemove.textContent = "-";
+        commentRemove.hidden = !task.comment;
+
+        const comment = document.createElement("input");
+        comment.className = "task-comment";
+        comment.type = "text";
+        comment.placeholder = "";
+        comment.value = task.comment || "";
+        comment.hidden = !task.comment;
+        comment.addEventListener("input", () => {
+          task.comment = comment.value;
+          saveData();
+        });
+
+        commentToggle.addEventListener("click", () => {
+          comment.hidden = false;
+          commentRemove.hidden = false;
+          comment.focus();
+        });
+
+        commentRemove.addEventListener("click", () => {
+          task.comment = "";
+          comment.value = "";
+          comment.hidden = true;
+          commentRemove.hidden = true;
+          saveData();
+        });
+
+        content.append(text, comment);
+
+        if (window.WishShare && window.WishShare.isWishlist(topic)) {
+          const shopUrl = document.createElement("input");
+          shopUrl.className = "task-comment gift-shop-url";
+          shopUrl.type = "url";
+          shopUrl.placeholder = "Shop link (https://...)";
+          shopUrl.setAttribute("aria-label", `Shop link for ${task.text}`);
+          shopUrl.value = task.shopUrl || "";
+          shopUrl.addEventListener("input", () => {
+            task.shopUrl = shopUrl.value;
+            saveData();
+          });
+          content.appendChild(shopUrl);
+        }
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete-task";
+        deleteButton.type = "button";
+        deleteButton.setAttribute("aria-label", `Delete task: ${task.text}`);
+        deleteButton.textContent = "x";
+        deleteButton.addEventListener("click", () => {
+          topic.tasks = topic.tasks.filter(item => item.id !== task.id);
+          saveData();
+          render();
+        });
+
+        item.append(checkbox, favoriteButton, content, commentToggle, commentRemove, deleteButton);
+        tasksEl.appendChild(item);
+      });
+    }
+
+    function renderStats(topic) {
+      const doneCount = topic.tasks.filter(task => task.done).length;
+      statsDoneEl.textContent = `${doneCount}/${topic.tasks.length}`;
+    }
+
+    topicFormEl.addEventListener("submit", event => {
+      event.preventDefault();
+      const title = topicInputEl.value.trim();
+      if (!title) return;
+
+      const topic = { id: createId("topic"), title, tasks: [] };
+      data.topics.push(topic);
+      data.activeTopicId = topic.id;
+      topicInputEl.value = "";
+      saveData();
+      render();
+      taskInputEl.focus();
+    });
+
+    taskFormEl.addEventListener("submit", event => {
+      event.preventDefault();
+      const activeTopic = getActiveTopic();
+      const text = taskInputEl.value.trim();
+      if (!activeTopic || !text) return;
+
+      activeTopic.tasks.unshift({ id: createId("task"), text, done: false, comment: "", favorite: false });
+      taskInputEl.value = "";
+      saveData();
+      render();
+    });
+
+    clearDoneEl.addEventListener("click", () => {
+      const activeTopic = getActiveTopic();
+      if (!activeTopic) return;
+
+      activeTopic.tasks = activeTopic.tasks.filter(task => !task.done);
+      saveData();
+      render();
+    });
+
+    deleteTopicEl.addEventListener("click", () => {
+      const activeTopic = getActiveTopic();
+      if (!activeTopic || data.topics.length <= 1) return;
+
+      data.topics = data.topics.filter(topic => topic.id !== activeTopic.id);
+      data.activeTopicId = data.topics[0].id;
+      saveData();
+      render();
+    });
+
+    activeTitleEl.addEventListener("dblclick", startTitleEdit);
+
+    showAllEl.addEventListener("click", () => {
+      taskFilter = "all";
+      render();
+    });
+
+    showFavoritesEl.addEventListener("click", () => {
+      taskFilter = "favorites";
+      render();
+    });
+
+    window.WishlistLocal = {
+      getActiveTopic, saveData, render,
+      importPublished(wishlist, gifts) {
+        let topic = data.topics.find(item => item.wishlistId === wishlist.id);
+        if (!topic) {
+          topic = {
+            id: createId("topic"), title: wishlist.title,
+            wishlistId: wishlist.id, wishlistOwnerId: wishlist.owner_id,
+            shareToken: wishlist.share_token,
+            tasks: gifts.map(gift => ({
+              id: createId("task"), cloudGiftId: gift.id,
+              text: gift.title, comment: gift.note, shopUrl: gift.shop_url,
+              done: false, favorite: false
+            }))
+          };
+          data.topics.push(topic);
+        }
+        data.activeTopicId = topic.id;
+        saveData();
+        render();
+      }
+    };
+    render();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="wishlist-owner.js"></script>
+</body>
+</html>

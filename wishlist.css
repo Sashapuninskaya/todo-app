@@ -1,0 +1,35 @@
+.wishlist-tools {
+  padding: 20px 28px;
+  font-size: 14px;
+}
+.wishlist-tools h3 { margin: 0 0 8px; font-size: 16px; }
+.wishlist-tools p { margin: 8px 0; }
+.wishlist-tools input, .wishlist-tools button, .gift-page button {
+  font: inherit;
+  padding: 9px 12px;
+  border: 1px solid #dedbd2;
+  color: #101010;
+  background: transparent;
+}
+.wishlist-tools button, .gift-page button { cursor: pointer; }
+.wishlist-tools button:hover, .gift-page button:hover { background: #e9e7e1; }
+.wishlist-login { display: flex; flex-wrap: wrap; gap: 8px; }
+.wishlist-login input { min-width: 0; width: 180px; }
+#wishlistLink { width: 100%; margin: 8px 0; }
+.gift-shop-url { margin-top: 8px; }
+.wishlist-tools [hidden], .gift-page [hidden] { display: none !important; }
+.gift-page {
+  margin: 0;
+  background: #f7f6f2;
+  color: #101010;
+  font: 16px/1.5 "Space Grotesk", "Segoe UI", sans-serif;
+}
+.gift-page main { max-width: 720px; margin: 60px auto; padding: 0 24px; }
+.gift-page h1 { font-size: 38px; line-height: 1.1; }
+.gift-page ul { list-style: none; padding: 0; }
+.gift-card { margin: 24px 0; padding: 20px 0; border-bottom: 1px solid #dedbd2; }
+.gift-card h2 { font-size: 20px; margin: 0 0 8px; overflow-wrap: anywhere; }
+.gift-card p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.gift-card a { color: inherit; margin-right: 20px; }
+.gift-card button:disabled { cursor: default; opacity: .6; }
+.gift-page .reserved { font-size: 14px; color: #6d6b66; }

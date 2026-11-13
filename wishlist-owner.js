@@ -59,17 +59,25 @@
       input.type = key === "imageUrl" ? "url" : "text";
       input.placeholder = placeholder;
       input.value = task[key] || "";
+      let previewTimer;
+      function updatePhoto() {
+        clearTimeout(previewTimer);
+        if (!item.isConnected) return;
+        const nextPhoto = window.createGiftPhoto(input.value.trim(), task.text);
+        photo.replaceWith(nextPhoto);
+        photo = nextPhoto;
+      }
       input.addEventListener("input", () => {
         task[key] = input.value;
         if (key === "brand") brandLabel.textContent = task.brand;
         if (key === "price") priceLabel.textContent = task.price;
         local.saveData();
+        if (key === "imageUrl") {
+          clearTimeout(previewTimer);
+          previewTimer = setTimeout(updatePhoto, 400);
+        }
       });
-      if (key === "imageUrl") input.addEventListener("change", () => {
-        const nextPhoto = window.createGiftPhoto(input.value.trim(), task.text);
-        photo.replaceWith(nextPhoto);
-        photo = nextPhoto;
-      });
+      if (key === "imageUrl") input.addEventListener("change", updatePhoto);
       label.appendChild(input);
       editor.appendChild(label);
     });

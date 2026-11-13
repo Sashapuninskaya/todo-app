@@ -23,11 +23,14 @@ window.createGiftPhoto = function (source, title) {
   placeholder.className = "photo-placeholder";
   placeholder.textContent = "No photo yet";
   figure.appendChild(placeholder);
-  const url = window.safeShopUrl(source);
+  const url = window.safeShopUrl((source || "").trim());
+  if (source && !url) placeholder.textContent = "Use a direct https:// image link";
   if (url) {
+    placeholder.textContent = "Loading photo...";
     const image = document.createElement("img");
     image.alt = title;
-    image.loading = "lazy";
+    // A hidden, lazy-loaded image may never start loading.
+    image.loading = "eager";
     image.referrerPolicy = "no-referrer";
     image.hidden = true;
     image.addEventListener("load", () => {
@@ -37,7 +40,7 @@ window.createGiftPhoto = function (source, title) {
     image.addEventListener("error", () => {
       image.hidden = true;
       placeholder.hidden = false;
-      placeholder.textContent = "Photo unavailable";
+      placeholder.textContent = "Photo unavailable. Check the image link.";
     });
     image.src = url;
     figure.appendChild(image);

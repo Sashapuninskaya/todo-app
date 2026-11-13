@@ -722,6 +722,7 @@
     }
 
     function renderTasks(topic) {
+      document.querySelector(".main").classList.toggle("wish-mode", !!(window.WishShare && window.WishShare.isWishlist(topic)));
       activeTitleEl.textContent = topic.title;
       const doneCount = topic.tasks.filter(task => task.done).length;
       const favoriteCount = topic.tasks.filter(task => task.favorite).length;
@@ -836,6 +837,9 @@
         });
 
         item.append(checkbox, favoriteButton, content, commentToggle, commentRemove, deleteButton);
+        if (window.WishShare && window.WishShare.isWishlist(topic)) {
+          window.WishShare.decorateGift(item, content, task, topic.tasks.indexOf(task) + 1);
+        }
         tasksEl.appendChild(item);
       });
     }
@@ -945,7 +949,7 @@
             throw new Error("Invalid task in the backup. Current tasks were not changed.");
           }
           taskIds.add(task.id);
-          ["comment", "shopUrl", "cloudGiftId"].forEach(key => {
+          ["comment", "shopUrl", "cloudGiftId", "imageUrl", "brand", "price"].forEach(key => {
             if (task[key] !== undefined && typeof task[key] !== "string") throw new Error("Invalid task details.");
           });
           if (task.favorite !== undefined && typeof task.favorite !== "boolean") throw new Error("Invalid star value.");
@@ -989,6 +993,7 @@
             tasks: gifts.map(gift => ({
               id: createId("task"), cloudGiftId: gift.id,
               text: gift.title, comment: gift.note, shopUrl: gift.shop_url,
+              imageUrl: gift.image_url || "", brand: gift.brand || "", price: gift.price || "",
               done: false, favorite: false
             }))
           };

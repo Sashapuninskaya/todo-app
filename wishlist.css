@@ -20,16 +20,71 @@
 .wishlist-tools [hidden], .gift-page [hidden] { display: none !important; }
 .gift-page {
   margin: 0;
-  background: #f7f6f2;
-  color: #101010;
-  font: 16px/1.5 "Space Grotesk", "Segoe UI", sans-serif;
+  background: #73736f;
+  color: #f1e7ba;
+  font: 16px/1.5 Georgia, "Times New Roman", serif;
 }
-.gift-page main { max-width: 720px; margin: 60px auto; padding: 0 24px; }
-.gift-page h1 { font-size: 38px; line-height: 1.1; }
-.gift-page ul { list-style: none; padding: 0; }
-.gift-card { margin: 24px 0; padding: 20px 0; border-bottom: 1px solid #dedbd2; }
-.gift-card h2 { font-size: 20px; margin: 0 0 8px; overflow-wrap: anywhere; }
+.gift-page main { max-width: 1120px; margin: 60px auto; padding: 0 28px; }
+.gift-page h1 { font-size: clamp(36px, 5vw, 64px); line-height: 1.1; font-weight: 400; }
+.gift-page ul { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; margin-top: 36px; }
+.gift-card { margin: 0; padding: 12px; background: #eee5b9; color: #252419; display: flex; flex-direction: column; }
+.gift-card h2 { font-size: 16px; line-height: 1.35; margin: 12px 8px 0; overflow-wrap: anywhere; font-weight: 500; }
 .gift-card p { white-space: pre-wrap; overflow-wrap: anywhere; }
-.gift-card a { color: inherit; margin-right: 20px; }
+.gift-card > p:not(.gift-brand):not(.gift-price) { font-size: 13px; margin: 20px 8px; }
+.gift-card a { color: inherit; font-size: 12px; text-underline-offset: 3px; }
 .gift-card button:disabled { cursor: default; opacity: .6; }
 .gift-page .reserved { font-size: 14px; color: #6d6b66; }
+
+.gift-photo { position: relative; width: 100%; aspect-ratio: 4 / 5; margin: 0; background: #d6d3c5; display: grid; place-items: center; overflow: hidden; }
+.gift-photo img { width: 100%; height: 100%; position: absolute; inset: 0; object-fit: cover; }
+.gift-photo [hidden] { display: none !important; }
+.photo-placeholder { font: italic 14px Georgia, serif; color: #666356; }
+.gift-number { display: block; width: 100%; margin: 12px 0 0; font: 11px Georgia, serif; }
+.gift-card .gift-brand, .wish-mode .gift-brand { text-align: center; text-transform: uppercase; letter-spacing: .2em; font-size: 11px; line-height: 1.5; min-height: 17px; margin: 12px 0 24px; }
+.gift-card .gift-price, .wish-mode .gift-price { font-size: 12px; margin: 8px 8px 0; min-height: 18px; }
+.gift-actions { margin: auto 8px 4px; padding-top: 24px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.gift-page > main > button { color: #f1e7ba; border-color: #b8b4a2; }
+.gift-page > main > button:hover { background: #646460; }
+.gift-actions button { padding: 7px 10px; color: #252419; border-color: #aaa17b; font-size: 12px; }
+
+.main.wish-mode { background: #73736f; color: #f1e7ba; }
+.wish-mode .main-header { flex-wrap: wrap; }
+.wish-mode h2 { font-family: Georgia, serif; font-weight: 400; }
+.wish-mode .hint { color: #e2dcc5; }
+.wish-mode .topic-actions { flex-wrap: wrap; }
+.wish-mode .clear-done, .wish-mode .delete-topic { color: #f1e7ba; border-color: #b8b4a2; }
+.wish-mode .task-form input { background: #eee5b9; color: #252419; border-color: transparent; }
+.wish-mode .task-form input::placeholder { color: #666356; }
+.wish-mode .filter-button { color: #f1e7ba; background: transparent; border-color: #b8b4a2; }
+.wish-mode .filter-button.active { background: #eee5b9; color: #252419; border-color: #eee5b9; }
+.wish-mode .empty { color: #f1e7ba; }
+.wish-mode .tasks { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.wish-mode .task { flex-wrap: wrap; align-content: flex-start; gap: 10px; padding: 10px; background: #eee5b9; color: #252419; font-family: Georgia, serif; }
+.wish-mode .task > .gift-photo { order: 0; flex: 0 0 100%; }
+.wish-mode .task > .gift-number { order: 1; margin: 0; }
+.wish-mode .task > .task-content { order: 2; flex: 0 0 100%; }
+.wish-mode .task > button, .wish-mode .task > .task-checkbox { order: 3; }
+.wish-mode .task > .task-content .task-title { font-size: 16px; line-height: 1.35; margin: 12px 8px 0; overflow-wrap: anywhere; }
+.wish-mode .task.done .task-title { color: #666356; }
+.wish-mode .task-comment { background: transparent; border: 0; border-bottom: 1px solid #c5bd98; font-family: Georgia, serif; font-size: 12px; padding: 8px; }
+.wish-mode .favorite-task.active { color: #252419; }
+.wish-mode .comment-toggle { background: transparent; color: #252419; border: 1px solid #aaa17b; }
+.wish-mode .comment-remove { color: #252419; border-color: #aaa17b; }
+.wish-mode .delete-task { margin-left: auto; }
+.gift-editor { font: 12px/1.5 Georgia, serif; margin: 16px 8px; }
+.gift-editor summary { cursor: pointer; color: #59533d; }
+.gift-editor label { display: block; margin-top: 10px; }
+.gift-editor input { display: block; width: 100%; min-width: 0; padding: 6px 0; border: 0; border-bottom: 1px solid #bdb48c; background: transparent; color: #252419; font: inherit; }
+.wish-mode .wishlist-tools { color: #f1e7ba; }
+.wish-mode .wishlist-tools input, .wish-mode .wishlist-tools button { color: #f1e7ba; border-color: #b8b4a2; }
+.wish-mode .wishlist-tools input::placeholder { color: #ded8bf; }
+.wish-mode .wishlist-tools a { color: inherit; }
+.wish-mode .wishlist-tools button:hover { background: #646460; }
+
+@media (max-width: 900px) {
+  .gift-page ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+}
+@media (max-width: 520px) {
+  .gift-page main { margin: 32px auto; padding: 0 20px; }
+  .gift-page ul, .wish-mode .tasks { grid-template-columns: minmax(0, 1fr); }
+}

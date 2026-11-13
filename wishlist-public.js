@@ -30,17 +30,32 @@
       }
       document.getElementById("giftListTitle").textContent = data.title;
       document.title = data.title;
-      data.gifts.forEach(gift => {
+      data.gifts.forEach((gift, index) => {
         const item = document.createElement("li");
         item.className = "gift-card";
+        item.appendChild(window.createGiftPhoto(gift.image_url, gift.title));
+        const number = document.createElement("span");
+        number.className = "gift-number";
+        number.textContent = String(index + 1).padStart(2, "0");
+        item.appendChild(number);
+        const brand = document.createElement("p");
+        brand.className = "gift-brand";
+        brand.textContent = gift.brand || "";
+        item.appendChild(brand);
         const heading = document.createElement("h2");
         heading.textContent = gift.title;
         item.appendChild(heading);
+        const price = document.createElement("p");
+        price.className = "gift-price";
+        price.textContent = gift.price || "";
+        item.appendChild(price);
         if (gift.note) {
           const note = document.createElement("p");
           note.textContent = gift.note;
           item.appendChild(note);
         }
+        const actions = document.createElement("div");
+        actions.className = "gift-actions";
         const url = window.safeShopUrl(gift.shop_url);
         if (url) {
           const link = document.createElement("a");
@@ -48,7 +63,7 @@
           link.target = "_blank";
           link.rel = "noopener noreferrer";
           link.textContent = "Open shop";
-          item.appendChild(link);
+          actions.appendChild(link);
         }
         const button = document.createElement("button");
         button.type = "button";
@@ -74,7 +89,8 @@
             status.textContent = `Could not confirm the reservation: ${error.message}. Refresh availability before buying.`;
           }
         });
-        item.appendChild(button);
+        actions.appendChild(button);
+        item.appendChild(actions);
         list.appendChild(item);
       });
       status.textContent = data.gifts.length ? "Availability updated." : "No gifts published yet.";

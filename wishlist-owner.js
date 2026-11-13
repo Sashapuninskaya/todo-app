@@ -27,7 +27,56 @@
     if (!client) status.textContent = "Could not load Supabase. Check your internet connection and reload.";
   }
 
-  window.WishShare = { isWishlist, render };
+  function decorateGift(item, content, task, number) {
+    let photo = window.createGiftPhoto(task.imageUrl, task.text);
+    const numberLabel = document.createElement("span");
+    numberLabel.className = "gift-number";
+    numberLabel.textContent = String(number).padStart(2, "0");
+    item.prepend(photo, numberLabel);
+
+    const brandLabel = document.createElement("p");
+    brandLabel.className = "gift-brand";
+    brandLabel.textContent = task.brand || "";
+    const priceLabel = document.createElement("p");
+    priceLabel.className = "gift-price";
+    priceLabel.textContent = task.price || "";
+    content.prepend(brandLabel);
+    content.querySelector(".task-title").after(priceLabel);
+
+    const editor = document.createElement("details");
+    editor.className = "gift-editor";
+    const summary = document.createElement("summary");
+    summary.textContent = "Photo, brand & price";
+    editor.appendChild(summary);
+    [
+      ["imageUrl", "Photo URL", "https://.../photo.jpg"],
+      ["brand", "Brand", "Brand or maker"],
+      ["price", "Price", "e.g. 2 000 ₽"]
+    ].forEach(([key, labelText, placeholder]) => {
+      const label = document.createElement("label");
+      label.textContent = labelText;
+      const input = document.createElement("input");
+      input.type = key === "imageUrl" ? "url" : "text";
+      input.placeholder = placeholder;
+      input.value = task[key] || "";
+      input.addEventListener("input", () => {
+        task[key] = input.value;
+        if (key === "brand") brandLabel.textContent = task.brand;
+        if (key === "price") priceLabel.textContent = task.price;
+        local.saveData();
+      });
+      if (key === "imageUrl") input.addEventListener("change", () => {
+        const nextPhoto = window.createGiftPhoto(input.value.trim(), task.text);
+        photo.replaceWith(nextPhoto);
+        photo = nextPhoto;
+      });
+      label.appendChild(input);
+      editor.appendChild(label);
+    });
+    content.appendChild(editor);
+  }
+
+  window.WishShare = { isWishlist, render, decorateGift };
   local.render();
   if (!client) return;
 
@@ -103,11 +152,22 @@
       status.textContent = "Use a complete http:// or https:// shop link for each gift, or leave it empty.";
       return;
     }
+    if (topic.tasks.some(task => task.imageUrl && !window.safeShopUrl(task.imageUrl.trim()))) {
+      status.textContent = "Use an http:// or https:// photo link, or leave the photo empty.";
+      return;
+    }
     busy = true;
     const app = document.querySelector(".app");
     app.inert = true;
     status.textContent = "Publishing gifts...";
     try {
+      const schemaCheck = await client.from("wishlist_gifts").select("image_url,brand,price").limit(0);
+      if (schemaCheck.error) {
+        if (["42703", "PGRST204"].includes(schemaCheck.error.code)) {
+          throw new Error("Run wishlist-design-update.sql in Supabase SQL Editor first, then publish again.");
+        }
+        throw schemaCheck.error;
+      }
       let wishlist;
       if (topic.wishlistId && topic.wishlistOwnerId === user.id) {
         const result = await client.from("wishlists").update({ title: topic.title })
@@ -135,7 +195,10 @@
           wishlist_id: wishlist.id,
           title: task.text,
           note: task.comment || "",
-          shop_url: window.safeShopUrl((task.shopUrl || "").trim())
+          shop_url: window.safeShopUrl((task.shopUrl || "").trim()),
+          image_url: window.safeShopUrl((task.imageUrl || "").trim()),
+          brand: task.brand || "",
+          price: task.price || ""
         };
         // Never overwrite the reserved flag when editing or republishing a gift.
         const result = task.cloudGiftId && existingIds.has(task.cloudGiftId)
